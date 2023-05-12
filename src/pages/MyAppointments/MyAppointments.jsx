@@ -13,7 +13,7 @@ const MyAppointments = () => {
     }, [url])
 
     return (
-        <div className='mt-8 mb-5 mx-3'>
+        <div className='mt-8 mb-5'>
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
                     {/* head */}

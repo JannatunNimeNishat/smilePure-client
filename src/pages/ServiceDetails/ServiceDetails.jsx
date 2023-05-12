@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
+import AllServices from './AllServices';
 
 const ServiceDetails = () => {
     const service = useLoaderData();
     // console.log(service);
-    const { _id, doctor_name, doctor_img, price, service_name, img, details } = service
+    const { _id, doctor_name, doctor_img, price, service_name, img, details } = service;
+
     return (
         <div className='mt-8 mb-5 md:grid grid-cols-4 gap-3'>
             <div className='col-span-3 px-5'>
@@ -30,7 +32,9 @@ const ServiceDetails = () => {
 
             </div>
             <div className='col-span-1'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore explicabo quas rerum cumque sint neque iure ipsa, enim consequuntur quod quo, debitis veniam aperiam, quae praesentium iusto temporibus! Consequatur, doloremque.
+                <div>
+                    <AllServices></AllServices>
+                </div>
                 <div className='mt-8'>
                     <h3 className='text-2xl font-bold'>Price: ${price}</h3>
                     <Link to={`/bookAppointment/${_id}`}><button className="btn btn-wide mt-3">Book an Appointment</button></Link>
