@@ -12,13 +12,7 @@ const Register = () => {
         const email = form.email.value;
         const password = form.password.value;
         const photoURL = form.photoURL.value;
-        const newUser={
-            name,
-            email,
-            password,
-            photoURL
-        }
-        console.log(newUser);
+    
         //
         signUp(email,password)
         .then(async result=>{

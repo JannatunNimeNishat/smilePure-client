@@ -1,15 +1,37 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../AuthProvider/AuthProvider';
 
 const NavBar = () => {
 
+    const {user,logout} = useContext(AuthContext)
+    
+    const handleLogout =()=>{
+        logout()
+        .then(()=>{
+           
+        })
+        .catch(error=>{
+            console.log(error.message);
+        })
+    }
     const navItems = <>
-    
-    <li><Link to='/'>Home</Link></li>
-    <li><Link to='/about'>About</Link></li>
-    <li><Link to='/login'>Login</Link></li>
-    
-    
+
+        <li><Link to='/'>Home</Link></li>
+        <li><Link to='/about'>About</Link></li>
+        {
+            user ? 
+            <>
+            <li onClick={handleLogout}><Link>Logout</Link></li>
+            <li><Link to='/my_appointments'>My Appointments</Link></li>
+
+            </>
+
+            :
+        <li><Link to='/login'>Login</Link></li>
+        }
+
+
     </>
 
 
@@ -24,21 +46,10 @@ const NavBar = () => {
 
                     <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
 
-                    {navItems}
+                        {navItems}
 
 
-                        {/* <li><a>Item 1</a></li>
-                        <li tabIndex={0}>
-                            <a className="justify-between">
-                                Parent
-                                <svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
-                            </a>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </li>
-                        <li><a>Item 3</a></li> */}
+
                     </ul>
                 </div>
                 <Link className="btn btn-ghost normal-case text-xl" to='/'>SmilePure</Link>
@@ -46,21 +57,10 @@ const NavBar = () => {
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
 
-                        {navItems}
+                    {navItems}
 
 
-                   {/*  <li><a>Item 1</a></li>
-                    <li tabIndex={0}>
-                        <a>
-                            Parent
-                            <svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
-                        </a>
-                        <ul className="p-2">
-                            <li><a>Submenu 1</a></li>
-                            <li><a>Submenu 2</a></li>
-                        </ul>
-                    </li>
-                    <li><a>Item 3</a></li> */}
+
                 </ul>
             </div>
             <div className="navbar-end">
