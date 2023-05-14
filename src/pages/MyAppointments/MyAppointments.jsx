@@ -10,20 +10,20 @@ const MyAppointments = () => {
     const navigate = useNavigate()
     const url = `http://localhost:5000/appointments?email=${user?.email}`
     useEffect(() => {
-        fetch(url,{
+        fetch(url, {
             method: 'GET',
-            headers:{
+            headers: {
                 // 'authorization':`Bearer`
-                'authorization':`Bearer ${localStorage.getItem('smilePure-access-token')}`
+                'authorization': `Bearer ${localStorage.getItem('smilePure-access-token')}`
             }
         })
             .then(res => res.json())
             .then(data => {
-                if(!data.error){
+                if (!data.error) {
 
                     setAppointments(data)
                 }
-                else{
+                else {
                     navigate('/')
                 }
                 // console.log(data);
@@ -49,24 +49,48 @@ const MyAppointments = () => {
                     .then(res => res.json())
                     .then(data => {
                         console.log(data);
-                        if(data.deletedCount>1)
-                        Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
-                        )
+                        if (data.deletedCount > 1)
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
 
                         const remainingAppointments = appointments.filter(appointment => appointment._id !== id);
                         setAppointments(remainingAppointments)
                     })
-                
+
             }
         })
 
+    }
 
+    const handleMakePayment = (id) => {
+        console.log(id);
+        /* const status = {
+            status:'paid'
+        } */
+        fetch(`http://localhost:5000/appointments/${id}`, {
 
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ status: 'paid' })
 
-
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('test',data.modifiedCount);
+                if(data.modifiedCount>0){
+                    const unpaidAppointments = appointments.filter(appointment => appointment._id !== id);
+                    const paidAppointment = appointments.find(appointment => appointment._id === id);
+                    paidAppointment.status = 'paid';
+                    console.log(paidAppointment);
+                    const paidUnpaidAppointments = [paidAppointment,...unpaidAppointments];
+                    setAppointments(paidUnpaidAppointments);
+                }
+            })
     }
 
     return (
@@ -95,6 +119,7 @@ const MyAppointments = () => {
                                 key={appointment._id}
                                 appointment={appointment}
                                 handleAppointmentDelete={handleAppointmentDelete}
+                                handleMakePayment={handleMakePayment}
                             ></AppointmentsTable>)
                         }
 
