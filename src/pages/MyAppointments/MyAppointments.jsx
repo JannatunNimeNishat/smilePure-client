@@ -2,15 +2,32 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 import AppointmentsTable from './AppointmentsTable';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const MyAppointments = () => {
     const [appointments, setAppointments] = useState()
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate()
     const url = `http://localhost:5000/appointments?email=${user?.email}`
     useEffect(() => {
-        fetch(url)
+        fetch(url,{
+            method: 'GET',
+            headers:{
+                // 'authorization':`Bearer`
+                'authorization':`Bearer ${localStorage.getItem('smilePure-access-token')}`
+            }
+        })
             .then(res => res.json())
-            .then(data => setAppointments(data))
+            .then(data => {
+                if(!data.error){
+
+                    setAppointments(data)
+                }
+                else{
+                    navigate('/')
+                }
+                // console.log(data);
+            })
     }, [url])
 
     const handleAppointmentDelete = (id) => {
